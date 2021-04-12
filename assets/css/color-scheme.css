@@ -1,0 +1,31 @@
+.text-color-1 {
+    color: #FFFFFF;
+}
+
+.text-color-2 {
+    color: #83FDCA;
+}
+
+.text-color-3 {
+    color: #45A2CB;
+}
+
+.font-size-8 {
+    font-size: 40px;
+}
+
+.font-size-6 {
+    font-size: 30px;
+}
+
+.font-size-4 {
+    font-size: 20px;
+}
+
+.font-size-3-5 {
+    font-size: 17px;
+}
+
+.font-bold-6 {
+    font-weight: 600;
+}
