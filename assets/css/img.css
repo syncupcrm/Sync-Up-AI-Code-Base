@@ -4,6 +4,8 @@
 
 #img2 {
     width: 12vw;
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
 }
 
 #img3 {

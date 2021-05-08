@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "Syncup AI",
-    "version": "0.1",
+    "version": "0.3",
     "description": "Syncup AI desc",
     "offline_enabled": false,
     "browser_action": {

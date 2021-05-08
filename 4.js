@@ -207,6 +207,75 @@ TemplateDataComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵde
 
 /***/ }),
 
+/***/ "5o2n":
+/*!****************************************************************!*\
+  !*** ./src/app/common/guard/template-plan-validation.guard.ts ***!
+  \****************************************************************/
+/*! exports provided: TemplatePlanValidationGuard */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TemplatePlanValidationGuard", function() { return TemplatePlanValidationGuard; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "mrSG");
+/* harmony import */ var src_environments_environment__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src/environments/environment */ "AytR");
+/* harmony import */ var _enums_subcription_state_enum__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../enums/subcription-state.enum */ "hBP7");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ "fXoL");
+/* harmony import */ var ngx_toastr__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ngx-toastr */ "5eHb");
+/* harmony import */ var _service_subcription_subscription_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../service/subcription/subscription.service */ "4/0Z");
+
+
+
+
+
+
+class TemplatePlanValidationGuard {
+    constructor(toaster, subcriptionService) {
+        this.toaster = toaster;
+        this.subcriptionService = subcriptionService;
+    }
+    canActivate() {
+        return new Promise((success) => Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
+            var _a, _b, _c, _d, _e, _f, _g;
+            const subscription = yield this.subcriptionService.getSubscription();
+            if (subscription != null) {
+                if (subscription.state == _enums_subcription_state_enum__WEBPACK_IMPORTED_MODULE_2__["SubcriptionState"].PENDING) {
+                    this.toaster.error("If you think this is a mistake please contact " + src_environments_environment__WEBPACK_IMPORTED_MODULE_1__["environment"].help.email + " for more assistance.");
+                    this.toaster.error("We could not confirm the payment for " + ((_a = subscription.plan) === null || _a === void 0 ? void 0 : _a.name) + " please try after sometime.");
+                }
+                else if (subscription.state == _enums_subcription_state_enum__WEBPACK_IMPORTED_MODULE_2__["SubcriptionState"].INACTIVE) {
+                    this.toaster.error("If you think this is a mistake please contact " + src_environments_environment__WEBPACK_IMPORTED_MODULE_1__["environment"].help.email + " for more assistance.");
+                    this.toaster.error("Your subcription for " + ((_b = subscription.plan) === null || _b === void 0 ? void 0 : _b.name) + " is inactivated");
+                }
+                else if (subscription.state == _enums_subcription_state_enum__WEBPACK_IMPORTED_MODULE_2__["SubcriptionState"].ACTIVE) {
+                    if (subscription.track != null && subscription.plan != null) {
+                        if (((_c = subscription.track) === null || _c === void 0 ? void 0 : _c.template) < ((_d = subscription.plan) === null || _d === void 0 ? void 0 : _d.template) || ((_e = subscription.plan) === null || _e === void 0 ? void 0 : _e.template) == -1) {
+                            return success(true);
+                        }
+                        else {
+                            this.toaster.error("Your subcription " + ((_f = subscription.plan) === null || _f === void 0 ? void 0 : _f.name) + " only allows creation of " + subscription.plan.template + " template.");
+                        }
+                    }
+                    else {
+                        this.toaster.error("We could not load information related your subcription" + ((_g = subscription.plan) === null || _g === void 0 ? void 0 : _g.name) + ".");
+                    }
+                    return success(false);
+                }
+            }
+            else {
+                this.toaster.error("If you think this is a mistake please contact " + src_environments_environment__WEBPACK_IMPORTED_MODULE_1__["environment"].help.email + " for more assistance.");
+                this.toaster.error("We could not find product subcription associated with your email address");
+            }
+            return success(false);
+        }));
+    }
+}
+TemplatePlanValidationGuard.ɵfac = function TemplatePlanValidationGuard_Factory(t) { return new (t || TemplatePlanValidationGuard)(_angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵinject"](ngx_toastr__WEBPACK_IMPORTED_MODULE_4__["ToastrService"]), _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵinject"](_service_subcription_subscription_service__WEBPACK_IMPORTED_MODULE_5__["SubscriptionService"])); };
+TemplatePlanValidationGuard.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdefineInjectable"]({ token: TemplatePlanValidationGuard, factory: TemplatePlanValidationGuard.ɵfac, providedIn: 'root' });
+
+
+/***/ }),
+
 /***/ "IZ++":
 /*!************************************************************************************!*\
   !*** ./src/app/template/components/template-feature/template-feature.component.ts ***!
@@ -317,9 +386,11 @@ TemplateHomeComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵde
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TemplateRoutingModule", function() { return TemplateRoutingModule; });
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/router */ "tyNb");
-/* harmony import */ var _components_template_data_template_data_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/template-data/template-data.component */ "3tiB");
-/* harmony import */ var _components_template_home_template_home_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/template-home/template-home.component */ "ThW+");
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ "fXoL");
+/* harmony import */ var _common_guard_template_plan_validation_guard__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../common/guard/template-plan-validation.guard */ "5o2n");
+/* harmony import */ var _components_template_data_template_data_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/template-data/template-data.component */ "3tiB");
+/* harmony import */ var _components_template_home_template_home_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/template-home/template-home.component */ "ThW+");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/core */ "fXoL");
+
 
 
 
@@ -338,17 +409,18 @@ const routes = [
             {
                 path: "dashboard",
                 pathMatch: "full",
-                component: _components_template_home_template_home_component__WEBPACK_IMPORTED_MODULE_2__["TemplateHomeComponent"]
+                component: _components_template_home_template_home_component__WEBPACK_IMPORTED_MODULE_3__["TemplateHomeComponent"]
             },
             {
                 path: "create",
                 pathMatch: "full",
-                component: _components_template_data_template_data_component__WEBPACK_IMPORTED_MODULE_1__["TemplateDataComponent"]
+                canActivate: [_common_guard_template_plan_validation_guard__WEBPACK_IMPORTED_MODULE_1__["TemplatePlanValidationGuard"]],
+                component: _components_template_data_template_data_component__WEBPACK_IMPORTED_MODULE_2__["TemplateDataComponent"]
             },
             {
                 path: "edit/:id",
                 pathMatch: "full",
-                component: _components_template_data_template_data_component__WEBPACK_IMPORTED_MODULE_1__["TemplateDataComponent"]
+                component: _components_template_data_template_data_component__WEBPACK_IMPORTED_MODULE_2__["TemplateDataComponent"]
             }
         ]
     }
@@ -356,9 +428,9 @@ const routes = [
 class TemplateRoutingModule {
 }
 TemplateRoutingModule.ɵfac = function TemplateRoutingModule_Factory(t) { return new (t || TemplateRoutingModule)(); };
-TemplateRoutingModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdefineNgModule"]({ type: TemplateRoutingModule });
-TemplateRoutingModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdefineInjector"]({ imports: [[_angular_router__WEBPACK_IMPORTED_MODULE_0__["RouterModule"].forChild(routes)], _angular_router__WEBPACK_IMPORTED_MODULE_0__["RouterModule"]] });
-(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵsetNgModuleScope"](TemplateRoutingModule, { imports: [_angular_router__WEBPACK_IMPORTED_MODULE_0__["RouterModule"]], exports: [_angular_router__WEBPACK_IMPORTED_MODULE_0__["RouterModule"]] }); })();
+TemplateRoutingModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdefineNgModule"]({ type: TemplateRoutingModule });
+TemplateRoutingModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdefineInjector"]({ imports: [[_angular_router__WEBPACK_IMPORTED_MODULE_0__["RouterModule"].forChild(routes)], _angular_router__WEBPACK_IMPORTED_MODULE_0__["RouterModule"]] });
+(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵsetNgModuleScope"](TemplateRoutingModule, { imports: [_angular_router__WEBPACK_IMPORTED_MODULE_0__["RouterModule"]], exports: [_angular_router__WEBPACK_IMPORTED_MODULE_0__["RouterModule"]] }); })();
 
 
 /***/ }),

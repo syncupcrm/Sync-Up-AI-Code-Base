@@ -11,17 +11,22 @@
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CampaignService", function() { return CampaignService; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "mrSG");
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "fXoL");
-/* harmony import */ var _angular_fire_firestore__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/fire/firestore */ "I/3d");
-/* harmony import */ var _user_user_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../user/user.service */ "sBHq");
+/* harmony import */ var _enums_tracking_type_enum__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../enums/tracking-type.enum */ "eDj2");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ "fXoL");
+/* harmony import */ var _angular_fire_firestore__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/fire/firestore */ "I/3d");
+/* harmony import */ var _user_user_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../user/user.service */ "sBHq");
+/* harmony import */ var _subcription_subscription_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../subcription/subscription.service */ "4/0Z");
+
+
 
 
 
 
 class CampaignService {
-    constructor(fireStore, userService) {
+    constructor(fireStore, userService, subcriptionService) {
         this.fireStore = fireStore;
         this.userService = userService;
+        this.subcriptionService = subcriptionService;
         this.campaignList = [];
         this.dataset = [];
     }
@@ -38,6 +43,7 @@ class CampaignService {
                 campaign.created = new Date().getTime();
             }
             this.fireStore.collection("campaign").add(campaign).then((value) => {
+                this.subcriptionService.track(uid, _enums_tracking_type_enum__WEBPACK_IMPORTED_MODULE_1__["TrackingType"].CAMPAIGN, 1);
                 campaign.id = value.id;
                 if (this.campaignList.length == 0) {
                     this.loadAllCampaign();
@@ -106,6 +112,7 @@ class CampaignService {
                 });
             }
             this.fireStore.collection("campaign").doc(campaignId).delete().then(() => {
+                this.subcriptionService.track(uid, _enums_tracking_type_enum__WEBPACK_IMPORTED_MODULE_1__["TrackingType"].CAMPAIGN, -1);
                 const index = this.campaignList.findIndex((campaign) => {
                     return campaignId === campaign.id;
                 });
@@ -116,8 +123,8 @@ class CampaignService {
         }));
     }
 }
-CampaignService.ɵfac = function CampaignService_Factory(t) { return new (t || CampaignService)(_angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵinject"](_angular_fire_firestore__WEBPACK_IMPORTED_MODULE_2__["AngularFirestore"]), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵinject"](_user_user_service__WEBPACK_IMPORTED_MODULE_3__["UserService"])); };
-CampaignService.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineInjectable"]({ token: CampaignService, factory: CampaignService.ɵfac, providedIn: 'root' });
+CampaignService.ɵfac = function CampaignService_Factory(t) { return new (t || CampaignService)(_angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵinject"](_angular_fire_firestore__WEBPACK_IMPORTED_MODULE_3__["AngularFirestore"]), _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵinject"](_user_user_service__WEBPACK_IMPORTED_MODULE_4__["UserService"]), _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵinject"](_subcription_subscription_service__WEBPACK_IMPORTED_MODULE_5__["SubscriptionService"])); };
+CampaignService.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdefineInjectable"]({ token: CampaignService, factory: CampaignService.ɵfac, providedIn: 'root' });
 
 
 /***/ })

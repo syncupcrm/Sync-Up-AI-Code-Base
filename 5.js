@@ -234,7 +234,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var ngx_toastr__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ngx-toastr */ "5eHb");
 /* harmony import */ var _angular_fire_auth__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/fire/auth */ "UbJi");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/router */ "tyNb");
-/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/common */ "ofXK");
+/* harmony import */ var src_app_common_service_user_user_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/app/common/service/user/user.service */ "sBHq");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/common */ "ofXK");
+
 
 
 
@@ -260,10 +262,11 @@ function RegisterComponent_div_11_Template(rf, ctx) { if (rf & 1) {
 } }
 const _c0 = function () { return ["../login"]; };
 class RegisterComponent {
-    constructor(builder, toastr, auth, router) {
+    constructor(builder, toastr, auth, router, userService) {
         this.toastr = toastr;
         this.auth = auth;
         this.router = router;
+        this.userService = userService;
         this.loginForm = builder.group({});
         const email = new _angular_forms__WEBPACK_IMPORTED_MODULE_0__["FormControl"]('', [_angular_forms__WEBPACK_IMPORTED_MODULE_0__["Validators"].email, _angular_forms__WEBPACK_IMPORTED_MODULE_0__["Validators"].required]);
         const password = new _angular_forms__WEBPACK_IMPORTED_MODULE_0__["FormControl"]('', [_angular_forms__WEBPACK_IMPORTED_MODULE_0__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_0__["Validators"].minLength(8)]);
@@ -278,16 +281,20 @@ class RegisterComponent {
         this.loginForm.markAllAsTouched();
         if (this.loginForm.valid) {
             let user = this.loginForm.value;
-            this.auth.createUserWithEmailAndPassword(user.email, user.password).then(() => {
-                this.toastr.success("Account created! You will be redirected to homepage shortly.");
-                this.router.navigateByUrl("/home");
-            }, (reason) => {
-                this.toastr.error("Could not create account due to '" + reason.message + "'.");
+            this.userService.checkIfUserExists(user.email).then(() => {
+                this.auth.createUserWithEmailAndPassword(user.email, user.password).then(() => {
+                    this.toastr.success("Account created! You will be redirected to homepage shortly.");
+                    this.router.navigateByUrl("/home");
+                }, (reason) => {
+                    this.toastr.error("Could not create account due to '" + reason.message + "'.");
+                });
+            }, () => {
+                this.toastr.error("We could not find your account with us please register at https://www.syncupai.com.");
             });
         }
     }
 }
-RegisterComponent.ɵfac = function RegisterComponent_Factory(t) { return new (t || RegisterComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](_angular_forms__WEBPACK_IMPORTED_MODULE_0__["FormBuilder"]), _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](ngx_toastr__WEBPACK_IMPORTED_MODULE_3__["ToastrService"]), _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](_angular_fire_auth__WEBPACK_IMPORTED_MODULE_4__["AngularFireAuth"]), _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_5__["Router"])); };
+RegisterComponent.ɵfac = function RegisterComponent_Factory(t) { return new (t || RegisterComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](_angular_forms__WEBPACK_IMPORTED_MODULE_0__["FormBuilder"]), _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](ngx_toastr__WEBPACK_IMPORTED_MODULE_3__["ToastrService"]), _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](_angular_fire_auth__WEBPACK_IMPORTED_MODULE_4__["AngularFireAuth"]), _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_5__["Router"]), _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdirectiveInject"](src_app_common_service_user_user_service__WEBPACK_IMPORTED_MODULE_6__["UserService"])); };
 RegisterComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdefineComponent"]({ type: RegisterComponent, selectors: [["app-register"]], decls: 17, vars: 6, consts: [[1, "row", "justify-content-center", "pt-5"], [1, "col-4", "pt-5"], [1, "w-100", 3, "formGroup", "submit"], [1, "form-group"], ["placeholder", "Enter Email", "type", "email", "autocomplete", "on", "formControlName", "email", 1, "form-control", "input-box-gradient", "text-color-1", "font-size-3-5"], ["class", "invalid-feedback d-block", 4, "ngIf"], [1, "form-group", "pt-2"], ["placeholder", "Password", "type", "password", "autocomplete", "on", "formControlName", "password", 1, "form-control", "input-box-gradient", "text-color-1", "font-size-3-5"], ["placeholder", "Confirm Password", "type", "password", "autocomplete", "on", "formControlName", "cpassword", 1, "form-control", "input-box-gradient", "text-color-1", "font-size-3-5"], [1, "form-group", "pt-2", "d-flex", "justify-content-start"], ["type", "submit", 1, "btn", "btn-info", "btn-transparent", "font-size-4", "text-uppercase", "font-size-3-5", "rounded-pill", "px-3"], ["type", "button", 1, "btn", "btn-info", "btn-transparent", "font-size-4", "text-uppercase", "font-size-3-5", "rounded-pill", "px-3", "mx-3", 3, "routerLink"], [1, "invalid-feedback", "d-block"]], template: function RegisterComponent_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](0, "div", 0);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵelementStart"](1, "div", 1);
@@ -327,7 +334,7 @@ RegisterComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdefine
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("ngIf", ctx.loginForm.controls.cpassword.touched == true && ctx.loginForm.controls.cpassword.errors !== null);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵadvance"](4);
         _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵproperty"]("routerLink", _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵpureFunction0"](5, _c0));
-    } }, directives: [_angular_forms__WEBPACK_IMPORTED_MODULE_0__["ɵangular_packages_forms_forms_ba"], _angular_forms__WEBPACK_IMPORTED_MODULE_0__["NgControlStatusGroup"], _angular_forms__WEBPACK_IMPORTED_MODULE_0__["FormGroupDirective"], _angular_forms__WEBPACK_IMPORTED_MODULE_0__["DefaultValueAccessor"], _angular_forms__WEBPACK_IMPORTED_MODULE_0__["NgControlStatus"], _angular_forms__WEBPACK_IMPORTED_MODULE_0__["FormControlName"], _angular_common__WEBPACK_IMPORTED_MODULE_6__["NgIf"], _angular_router__WEBPACK_IMPORTED_MODULE_5__["RouterLink"]], styles: ["\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJyZWdpc3Rlci5jb21wb25lbnQuY3NzIn0= */"] });
+    } }, directives: [_angular_forms__WEBPACK_IMPORTED_MODULE_0__["ɵangular_packages_forms_forms_ba"], _angular_forms__WEBPACK_IMPORTED_MODULE_0__["NgControlStatusGroup"], _angular_forms__WEBPACK_IMPORTED_MODULE_0__["FormGroupDirective"], _angular_forms__WEBPACK_IMPORTED_MODULE_0__["DefaultValueAccessor"], _angular_forms__WEBPACK_IMPORTED_MODULE_0__["NgControlStatus"], _angular_forms__WEBPACK_IMPORTED_MODULE_0__["FormControlName"], _angular_common__WEBPACK_IMPORTED_MODULE_7__["NgIf"], _angular_router__WEBPACK_IMPORTED_MODULE_5__["RouterLink"]], styles: ["\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJyZWdpc3Rlci5jb21wb25lbnQuY3NzIn0= */"] });
 
 
 /***/ })

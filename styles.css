@@ -8797,6 +8797,7 @@ a.text-dark:hover, a.text-dark:focus {
 
 #img2 {
     width: 12vw;
+    transform: scaleX(-1);
 }
 
 #img3 {
